@@ -13,8 +13,8 @@ use BPM::Engine::Exceptions qw/throw_expression throw_abstract/;
 extends 'BPM::Engine::Util::Expression::Base';
 
 my $_engine = Text::Xslate->new(
-    function => { 
-        #attribute => sub { ... } 
+    function => {
+        #attribute => sub { ... }
         },
     module => ['Text::Xslate::Bridge::TT2Like'], # 'Text::Xslate::Bridge::Alloy',
     syntax => 'TTerse',
@@ -27,10 +27,10 @@ my $_engine = Text::Xslate->new(
 
 sub _render {
     my ($self, $template, $args) = @_;
-    
+
     $args ||= $self->params;
     $template = '[% ' . $template . ' %]' unless $template =~ /(\[%|%\])/;
-    
+
     my $content;
     eval {
         # guard with timeout against infinite loops etc
@@ -39,7 +39,7 @@ sub _render {
         $content = $_engine->render_string($template, $args);
         alarm 0; # restore
         };
-    
+
     if(my $err = $@) {
         throw_expression error => qq/Couldn't render template "$err"/;
         }
@@ -53,9 +53,9 @@ sub evaluate {
 
     my $boolean = $self->_render($expr) || 0;
 
-    throw_expression("Condition eval '$expr': $boolean not a number") 
+    throw_expression("Condition eval '$expr': $boolean not a number")
         unless $boolean =~ /^\d$/;
-    throw_expression("Condition eval '$expr': $boolean not boolean (0 or 1)") 
+    throw_expression("Condition eval '$expr': $boolean not boolean (0 or 1)")
         unless ($boolean == 0 || $boolean == 1);
 
     return $boolean;
@@ -63,7 +63,7 @@ sub evaluate {
 
 sub render {
     my ($self, $expr) = @_;
-    
+
     my $args = $self->params;
     my $output_buffer = '';
     $args->{output} = sub { $output_buffer = $_[0]; };
@@ -81,14 +81,14 @@ sub assign {
     if(ref($expr)) { $expr = $expr->{content}; }
 
     my $output = $self->render($expr);
-    
+
     my $pi = $self->process_instance;
     my ($root, @junk) = split(/\./, $trg);
     if(scalar @junk) {
         my $stash = Template::Stash->new();
         my $attrib = $pi->attribute($root)->value;
-        $stash->set($root, $attrib);        
-        eval{        
+        $stash->set($root, $attrib);
+        eval{
             # set rvalue output as lvalue val, merging with $root
             $stash->set($trg, $output);
             };
@@ -100,7 +100,7 @@ sub assign {
     else {
         $pi->attribute($root => $output);
         }
-    
+
     }
 
 sub dotop {

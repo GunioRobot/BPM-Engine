@@ -27,8 +27,8 @@ role BPM::Engine::Handler::ProcessDefinitionHandler {
             $self->logger->error($error);
             throw_store(error => $error);
             };
-      }  
-  
+      }
+
   method create_package (Str|ScalarRef|LibXMLDoc $args) {
 
       my $package = eval {

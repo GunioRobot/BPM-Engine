@@ -75,7 +75,7 @@ has 'evaluator' => (
     is         => 'rw',
     lazy_build => 1,
     );
-    
+
 sub _build_evaluator {
     my $self = shift;
     return BPM::Engine::Util::ExpressionEvaluator->load(
@@ -262,13 +262,13 @@ sub _execute_activity_instance {
     return unless $self->cb_execute_activity($activity, $instance);
 
     my $completed = 0;
-    
+
     # Route
     if ($activity->is_route_type) {
         #$self->debug("runner: route type " . $activity->activity_uid);
         $completed = 1;
         }
-    
+
     # Implementations are No, Task, SubFlow or Reference
     elsif ($activity->is_implementation_type) {
         $self->debug("runner: executing implementation activity '"
@@ -276,13 +276,13 @@ sub _execute_activity_instance {
                 . "'");
         $completed = $self->_execute_implementation($activity, $instance);
         }
-    
+
     # BlockActivity executes an ActivitySet
     elsif ($activity->is_block_type) {
         $self->error("runner: BlockActivity not implemented yet ...");
         throw_abstract error => 'BlockActivity not implemented yet';
         }
-    
+
     # Events just complete, for now
     elsif ($activity->is_event_type) {
         #$self->notice("runner: Events not implemented yet ...");
@@ -348,9 +348,9 @@ sub complete_activity {
     my ($self, $activity, $instance, $run) = @_;
 
     $self->cb_complete_activity($activity, $instance);
-    
+
     $instance->apply_transition('finish');
-    $instance->fire_join if $activity->is_join;    
+    $instance->fire_join if $activity->is_join;
     $instance->update({ completed => DateTime->now() });
 
     if ($activity->is_end_activity()) {
@@ -611,7 +611,7 @@ BPM::Engine::ProcessRunner - Runs Processes
   $runner->start_process();
 
   # somewhere else, after completing a task, from an asynchronous task handler...
-  
+
   $runner->complete_activity($activity, $instance, 1);
 
 =head1 DESCRIPTION

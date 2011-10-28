@@ -18,7 +18,7 @@ __PACKAGE__->add_columns(
         #size              => 16,
         is_nullable       => 0,
         default_value     => 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-        },    
+        },
     package_uid => {
         data_type         => 'VARCHAR',
         size              => 64,
@@ -33,7 +33,7 @@ __PACKAGE__->add_columns(
         data_type         => 'VARCHAR',
         size              => 8,
         is_nullable       => 1,
-        },    
+        },
     specification => {
         data_type         => 'VARCHAR',
         size              => 20,
@@ -76,7 +76,7 @@ __PACKAGE__->add_columns(
         data_type         => 'ENUM',
         is_nullable       => 0,
         default           => 'UNDER_REVISION',
-        default_value     => 'UNDER_REVISION',  # sqlite       
+        default_value     => 'UNDER_REVISION',  # sqlite
         extra             => { list => [qw/UNDER_REVISION RELEASED UNDER_TEST/] },
         },
     description => {
@@ -128,12 +128,12 @@ __PACKAGE__->add_columns(
         data_type         => 'TEXT',
         is_nullable       => 1,
         serializer_class  => 'JSON',
-        },    
+        },
     extended_attr => {
         data_type         => 'TEXT',
         is_nullable       => 1,
         serializer_class  => 'JSON',
-        },     
+        },
     );
 
 __PACKAGE__->set_primary_key('package_id');
@@ -145,7 +145,7 @@ __PACKAGE__->has_many(
 
 __PACKAGE__->has_many(
     participants => 'BPM::Engine::Store::Result::Participant',
-    { 'foreign.parent_node' => 'self.package_id' }, 
+    { 'foreign.parent_node' => 'self.package_id' },
     { where => { participant_scope => 'Package' } }
     );
 

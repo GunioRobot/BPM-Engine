@@ -11,8 +11,8 @@ use BPM::Engine::Exceptions qw/throw_abstract/;
 sub is_enabled {
     my $self = shift;
 
-    #warn("Not an active instance") unless $self->is_active;    
-    
+    #warn("Not an active instance") unless $self->is_active;
+
     my $activity = $self->activity;
     if(!$activity->is_join) {
         die("Not a join " . $activity->activity_uid);
@@ -68,7 +68,7 @@ sub _or_join_should_fire {
 
     my %deferred_trans = map { $_->transition_id => 1 } $deferred_states->all;
     $deferred_trans{$self->transition_id} = 1;
-    
+
     # Each transition corresponds to either waiting for upstream,
     # executed+deferred, blocked, the start of a new cycle or this ai's
     # transition itself. Join should fire if there's no upstream activity left.
@@ -77,30 +77,30 @@ sub _or_join_should_fire {
         next if($transition->is_back_edge);
         return 0 unless $self->_upstream_blocked($transition);
         }
-    
+
     return 1;
     }
 
-# Search the transition's upstream subnet for active or blocked activity 
+# Search the transition's upstream subnet for active or blocked activity
 # instances. Transition has not been applied yet, so either
 # - still activity further upstream (last ai in process thread=active), or
 # - split.path blocked for last completed ai in process thread
 sub _upstream_blocked {
     my ($self, $transition) = @_;
-    
+
     my $rs = $self->process_instance->activity_instances_rs({
         tokenset => $self->tokenset,
         })->active_or_completed;
-    
-    my $split_blocked = sub {    
+
+    my $split_blocked = sub {
         my ($ai, $trans) = @_;
         my $split = $ai->split || die("Inclusive split has no join attached");
         $split->discard_changes;
-        if(   $split->states->{$trans->id} 
+        if(   $split->states->{$trans->id}
            && $split->states->{$trans->id} eq 'blocked') {
             # no blocking if followed a backedge upstream (cyclic wf)
-            my @tids = 
-                map { $_->id } 
+            my @tids =
+                map { $_->id }
                 $ai->activity->transitions({ is_back_edge => 1 })->all;
             if(scalar @tids) {
                 return 0 if $ai->next({ transition_id => [@tids] })->count;
@@ -111,15 +111,15 @@ sub _upstream_blocked {
             return 0;
             }
         };
-    
+
     my $seen  = 0;
     my $block = 0;
-    
+
     my(@act) = ([$transition->from_activity, $transition]);
     while(my $next = shift(@act)) {
         my ($upstream_act, $down_trans) = ($next->[0], $next->[1]);
         my @ai = $rs->search({'activity_id' => $upstream_act->id})->all;
-        
+
         # no activity instances, traverse further upstream
         if(!scalar @ai) {
             foreach my $trans($upstream_act->transitions_in) {
@@ -134,11 +134,11 @@ sub _upstream_blocked {
         else {
             $seen++;
             my %status = ();
-            foreach(@ai) { 
+            foreach(@ai) {
                 $status{
-                    $_->is_deferred ?  'deferred' : 
-                    ($_->is_completed ? 'completed' : 'active') 
-                    }++; 
+                    $_->is_deferred ?  'deferred' :
+                    ($_->is_completed ? 'completed' : 'active')
+                    }++;
                 }
 
             die("Invalid db state for instances " . $upstream_act->activity_uid)
@@ -154,11 +154,11 @@ sub _upstream_blocked {
             elsif($status{completed} && scalar(keys %status) == 1) {
                 # OR-split should be blocked, XOR split missed this transition by definition
                 if($upstream_act->is_or_split) {
-                    my $blocked = 0;                    
+                    my $blocked = 0;
                     foreach my $ai(@ai) {
                         $blocked++ if &$split_blocked($ai, $down_trans);
                         }
-                    die("OR split " . $upstream_act->activity_uid . " completed but not blocked") 
+                    die("OR split " . $upstream_act->activity_uid . " completed but not blocked")
                         unless $blocked;
                     }
                 elsif(!$upstream_act->is_xor_split) {
@@ -177,7 +177,7 @@ sub _upstream_blocked {
 
 sub fire_join {
     my $self = shift;
-    
+
     die("Not a join") unless $self->activity->is_join;
     die("Not active") unless $self->is_active;
 
@@ -208,7 +208,7 @@ sub _mark_upstream_joined {
     # traverse upstream
     while($upstream_ai = $self->prev) {
         delete $open_reach->{$upstream_ai->activity->id};
-        
+
         if($upstream_ai->activity->is_or_split) {
             if($upstream_ai->activity->id != $transition->from_activity->id) {
                 die("ShouldFire: Illegal transition for JoinActivity '" .
@@ -217,16 +217,16 @@ sub _mark_upstream_joined {
                     " activity '" . $transition->from_activity->activity_uid . "'");
                 }
 
-            my $split = $upstream_ai->split 
+            my $split = $upstream_ai->split
                 || die("Inclusive split has no join attached");
             $split->discard_changes;
-            
+
             # mark transition from split as 'fired' in join from this downstream branch
             my $should_fire = $split->should_fire($transition);
-            
+
             return 0 unless($is_parent || $should_fire);
             }
-        
+
         $is_parent  = 0;
         $self       = $upstream_ai;
         $transition = $upstream_ai->transition;

@@ -35,7 +35,7 @@ __PACKAGE__->add_columns(
         default           => 'Activity',
         default_value     => 'Activity',
         extra             => { list => [qw/ Activity Task Lane /] },
-        },    
+        },
     );
 __PACKAGE__->set_primary_key('performer_id');
 

@@ -50,7 +50,7 @@ my $t = [
       items => [qw//],
     },
     ];
-    
+
 
 foreach my $pack(@$t) {
     next unless @{$pack->{items}};
@@ -73,7 +73,7 @@ my @t = qw/
   17-production
   18-production-unsynchronized
   /;
-  
+
 $tt->process(
     './t/var/samples/package.tt',
     { id => 'samples', title => 'Samples', items => \@t, },

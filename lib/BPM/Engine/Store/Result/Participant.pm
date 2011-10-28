@@ -47,13 +47,13 @@ __PACKAGE__->add_columns(
         default           => 'Package',
         default_value     => 'Package',
         extra             => { list => [qw/ Package Process /] },
-        },    
+        },
     parent_node => {
         data_type         => 'CHAR',
         size              => 36,
         is_nullable       => 0,
         is_foreign_key    => 1,
-        },    
+        },
     attributes => {
         data_type         => 'TEXT',
         is_nullable       => 1,

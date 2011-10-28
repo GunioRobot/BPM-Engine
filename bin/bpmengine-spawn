@@ -46,7 +46,7 @@ elsif ($deploy) {
 else {
     pod2usage(1);
     }
-        
+
 #$schema->storage->backup('./var') if $connect_info[0] =~ /SQLite/;
 $schema->storage->disconnect if $connect_info[0] =~ /mysql/;
 

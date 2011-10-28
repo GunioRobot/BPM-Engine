@@ -27,14 +27,14 @@ __PACKAGE__->add_columns(
         extra             => { list => [qw/
             SPLIT JOIN
             /] },
-        },   
+        },
     position => {
         data_type         => 'TINYINT',
         default_value     => 0,
         is_nullable       => 0,
         size              => 3,
         extras            => { unsigned => 1 }
-        },     
+        },
     );
 
 __PACKAGE__->set_primary_key(qw/ activity_id transition_id split_or_join /);

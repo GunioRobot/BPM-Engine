@@ -143,6 +143,6 @@ my $aiD = eval { $tBD->apply($aiB); };
 
 $aiD = eval { $tCD->apply($aiC); };
 ok($aiD);
-ok(!$aiD->is_enabled);    
+ok(!$aiD->is_enabled);
 
 done_testing();

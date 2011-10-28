@@ -25,7 +25,7 @@ role BPM::Engine::Handler::ActivityInstanceHandler {
           || throw_store(error => "ActivityInstance '$id' not found");
       }
 
-  method change_activity_instance_state 
+  method change_activity_instance_state
       (Int|HashRef|ActivityInstance $ai, Str $state) {
 
       $ai = $self->get_activity_instance(

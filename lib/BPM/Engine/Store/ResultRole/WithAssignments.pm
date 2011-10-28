@@ -10,14 +10,14 @@ use Moose::Role;
 sub start_assignments {
     my $self = shift;
     my $assignments = $self->assignments || [];
-    return grep { !$_->{AssignTime} || $_->{AssignTime} eq 'Start' } 
+    return grep { !$_->{AssignTime} || $_->{AssignTime} eq 'Start' }
         @$assignments;
     }
 
 sub end_assignments {
     my $self = shift;
     my $assignments = $self->assignments || [];
-    return grep { $_->{AssignTime} eq 'End' } 
+    return grep { $_->{AssignTime} eq 'End' }
         @$assignments;
     }
 

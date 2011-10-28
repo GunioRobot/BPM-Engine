@@ -1,4 +1,4 @@
-package BPM::Engine::Store::Result::ActivityInstanceState; 
+package BPM::Engine::Store::Result::ActivityInstanceState;
 BEGIN {
     $BPM::Engine::Store::Result::ActivityInstanceState::VERSION   = '0.001';
     $BPM::Engine::Store::Result::ActivityInstanceState::AUTHORITY = 'cpan:SITETECH';
@@ -40,7 +40,7 @@ __PACKAGE__->add_columns(
     prev => {
         data_type         => 'INT',
         is_nullable       => 1,
-        size              => 11,        
+        size              => 11,
         },
     created => {
         data_type         => 'DATETIME',
@@ -53,7 +53,7 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key('event_id');
 
 __PACKAGE__->belongs_to(
-    activity_instance => 'BPM::Engine::Store::Result::ActivityInstance', 
+    activity_instance => 'BPM::Engine::Store::Result::ActivityInstance',
     'token_id', { cascade_delete => 0 }
     );
 
@@ -69,12 +69,12 @@ sub clone {
     }
 
 __PACKAGE__->inflate_column('state', {
-    inflate => sub { 
-        my ($value, $self) = @_; 
-        return $self->activity_instance->workflow->get_state($value); 
+    inflate => sub {
+        my ($value, $self) = @_;
+        return $self->activity_instance->workflow->get_state($value);
         },
-    deflate => sub { 
-        shift->stringify 
+    deflate => sub {
+        shift->stringify
         },
     });
 

@@ -24,12 +24,12 @@ __PACKAGE__->add_columns(
         size              => 36,
         is_nullable       => 0,
         is_foreign_key    => 1,
-        },    
+        },
     activity_uid => {
         data_type         => 'VARCHAR',
         size              => 64,
         is_nullable       => 1,
-        },    
+        },
     activity_name => {
         data_type         => 'VARCHAR',
         size              => 255,
@@ -39,20 +39,20 @@ __PACKAGE__->add_columns(
         data_type         => 'ENUM',
         is_nullable       => 0,
         default           => 'Implementation',
-        default_value     => 'Implementation',        
-        extra             => { 
-            list          => [qw/Implementation Route BlockActivity Event/] 
+        default_value     => 'Implementation',
+        extra             => {
+            list          => [qw/Implementation Route BlockActivity Event/]
             },
-        },    
+        },
     implementation_type => {
         data_type         => 'ENUM',
         is_nullable       => 0,
         default           => 'No',
-        default_value     => 'No',        
-        extra             => { 
-            list          => [qw/No Tool Task SubFlow Reference/] 
+        default_value     => 'No',
+        extra             => {
+            list          => [qw/No Tool Task SubFlow Reference/]
             },
-        },    
+        },
     event_type => {
         data_type         => 'ENUM',
         is_nullable       => 0,
@@ -71,18 +71,18 @@ __PACKAGE__->add_columns(
         data_type         => 'ENUM',
         is_nullable       => 0,
         default           => 'Automatic',
-        default_value     => 'Automatic',        
-        extra             => { 
-            list          => [qw/Automatic Manual/] 
+        default_value     => 'Automatic',
+        extra             => {
+            list          => [qw/Automatic Manual/]
             },
         },
     finish_mode => {
         data_type         => 'ENUM',
         is_nullable       => 0,
         default           => 'Automatic',
-        default_value     => 'Automatic',        
-        extra             => { 
-            list          => [qw/Automatic Manual/] 
+        default_value     => 'Automatic',
+        extra             => {
+            list          => [qw/Automatic Manual/]
             },
         },
     priority => {
@@ -90,19 +90,19 @@ __PACKAGE__->add_columns(
         default_value     => 0,
         is_nullable       => 0,
         size              => 21
-        },    
+        },
     start_quantity => {
         data_type         => 'INT',
         default_value     => 1,
         size              => 3,
         is_nullable       => 1,
-        },    
+        },
     completion_quantity => {
         data_type         => 'INT',
         default_value     => 1,
         size              => 3,
         is_nullable       => 1,
-        },    
+        },
     documentation_url => {
         data_type         => 'VARCHAR',
         size              => 255,
@@ -112,14 +112,14 @@ __PACKAGE__->add_columns(
         data_type         => 'VARCHAR',
         size              => 255,
         is_nullable       => 1,
-        },    
+        },
     join_type => {
         data_type         => 'ENUM',
         is_nullable       => 1,
         default           => 'NONE',
         default_value     => 'NONE',
-        extra             => { 
-            list => [qw/NONE AND XOR OR Exclusive Inclusive Parallel Complex/] 
+        extra             => {
+            list => [qw/NONE AND XOR OR Exclusive Inclusive Parallel Complex/]
             },
         },
     join_type_exclusive => {
@@ -127,28 +127,28 @@ __PACKAGE__->add_columns(
         is_nullable       => 1,
         default           => 'Data',
         default_value     => 'Data',
-        extra             => { 
-            list          => [qw/Data Event/] 
+        extra             => {
+            list          => [qw/Data Event/]
             },
         },
     split_type => {
         data_type         => 'ENUM',
         is_nullable       => 0,
         default           => 'NONE',
-        default_value     => 'NONE',        
-        extra             => { 
-            list => [qw/NONE AND XOR OR Exclusive Inclusive Parallel Complex/] 
+        default_value     => 'NONE',
+        extra             => {
+            list => [qw/NONE AND XOR OR Exclusive Inclusive Parallel Complex/]
             },
-        },    
+        },
     split_type_exclusive => {
         data_type         => 'ENUM',
         is_nullable       => 1,
         default           => 'Data',
         default_value     => 'Data',
-        extra             => { 
-            list          => [qw/Data Event/] 
+        extra             => {
+            list          => [qw/Data Event/]
             },
-        },    
+        },
     event_attr => {
         data_type         => 'TEXT',
         is_nullable       => 1,
@@ -168,17 +168,17 @@ __PACKAGE__->add_columns(
         data_type         => 'TEXT',
         is_nullable       => 1,
         serializer_class  => 'JSON',
-        },    
+        },
     assignments => {
         data_type         => 'TEXT',
         is_nullable       => 1,
         serializer_class  => 'JSON',
-        },    
+        },
     extended_attr => {
         data_type         => 'TEXT',
         is_nullable       => 1,
         serializer_class  => 'JSON',
-        },    
+        },
     );
 
 __PACKAGE__->set_primary_key('activity_id');
@@ -191,14 +191,14 @@ __PACKAGE__->belongs_to(
 
 # transitions
 __PACKAGE__->has_many(
-    transitions_in => 'BPM::Engine::Store::Result::Transition', 
+    transitions_in => 'BPM::Engine::Store::Result::Transition',
     { 'foreign.to_activity_id' => 'self.activity_id' }
     );
 __PACKAGE__->many_to_many(
     prev_activities => 'transitions_in', 'from_activity'
     );
 __PACKAGE__->has_many(
-    transitions => 'BPM::Engine::Store::Result::Transition', 
+    transitions => 'BPM::Engine::Store::Result::Transition',
     { 'foreign.from_activity_id' => 'self.activity_id' }
     );
 __PACKAGE__->many_to_many(
@@ -246,11 +246,11 @@ sub new {
 
 sub store_column {
     my ($self, $name, $value) = @_;
-    
+
     if ($name eq 'activity_uid') {
         $value = join( '_', split( /\s+/, $value ) ); #lc?
         }
-    
+
     $self->next::method( $name, $value );
     }
 
@@ -282,7 +282,7 @@ sub transitions_in_by_ref {
 
 sub transitions_by_ref {
     my ($self) = @_;
-    
+
     return $self->result_source->schema->resultset('Transition')->search(
         { 'me.from_activity_id' => $self->id,
           'transition_refs.split_or_join' => 'SPLIT',
@@ -294,12 +294,12 @@ sub transitions_by_ref {
 
 sub is_start_activity {
     my $self = shift;
-    #$g->is_source_vertex($v)    
+    #$g->is_source_vertex($v)
     return $self->transitions_in->count == 0 ? 1 : 0;
     }
 
 sub is_end_activity {
-    my $self = shift;    
+    my $self = shift;
     #$g->is_sink_vertex($v)
     return $self->transitions->count == 0 ? 1 : 0;
     }
@@ -386,7 +386,7 @@ sub is_complex_join {
 
 #-- implementation_type shortcuts (No Tool Task SubFlow Reference)
 
-sub is_impl_no { 
+sub is_impl_no {
     shift->implementation_type =~ /^no$/i ? 1 : 0;
     }
 

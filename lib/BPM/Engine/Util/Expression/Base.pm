@@ -14,7 +14,7 @@ has 'params' => (
     is       => 'rw',
     default  => sub { {} },
     handles  => {
-        get_param => 'get',        
+        get_param => 'get',
         set_param => 'set',
         variables => 'keys',
         set_activity => [ set => 'activity' ],

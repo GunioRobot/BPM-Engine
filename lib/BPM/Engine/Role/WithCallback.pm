@@ -34,7 +34,7 @@ version 0.001
 
 =head1 DESCRIPTION
 
-This role provides a callback code reference to L<BPM::Engine> and 
+This role provides a callback code reference to L<BPM::Engine> and
 L<BPM::Engine::ProcessRunner|BPM::Engine::ProcessRunner>.
 
 =head1 ATTRIBUTES

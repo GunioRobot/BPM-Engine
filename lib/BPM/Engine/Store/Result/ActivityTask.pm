@@ -29,7 +29,7 @@ __PACKAGE__->add_columns(
         is_foreign_key    => 1,
         is_nullable       => 1,
         extras            => { unsigned => 1 }
-        },    
+        },
     task_uid => {
         data_type         => 'VARCHAR',
         size              => 64,
@@ -39,12 +39,12 @@ __PACKAGE__->add_columns(
         data_type         => 'VARCHAR',
         size              => 64,
         is_nullable       => 1,
-        },    
+        },
     description => {
         data_type         => 'VARCHAR',
         size              => 255,
         is_nullable       => 1,
-        },    
+        },
     task_type => {
         data_type         => 'ENUM',
         is_nullable       => 1,
@@ -62,17 +62,17 @@ __PACKAGE__->add_columns(
     actual_params => {
         data_type         => 'TEXT',
         is_nullable       => 1,
-        serializer_class  => 'JSON',        
+        serializer_class  => 'JSON',
         },
     data_maps => {
         data_type         => 'TEXT',
         is_nullable       => 1,
         serializer_class  => 'JSON',
-        },    
+        },
     extended_attr => {
         data_type         => 'TEXT',
         is_nullable       => 1,
-        serializer_class  => 'JSON',        
+        serializer_class  => 'JSON',
         },
     );
 __PACKAGE__->set_primary_key(qw/ task_id /);

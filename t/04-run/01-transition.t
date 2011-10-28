@@ -22,8 +22,8 @@ if(1) {
 
     my $activity = $p->start_activities->[0];
     my $ai_A = #$r->_create_activity_instance($activity);
-        $activity->new_instance({ 
-                process_instance_id => $i->id 
+        $activity->new_instance({
+                process_instance_id => $i->id
                 });
     # main path (before splitted or after joined) doesn't have a parent_token
     # OR any ai not directly after a split doesn't have a parent_token, use ->prev instead ??
@@ -34,7 +34,7 @@ if(1) {
 
     #- follow transition A-B1 (split->join)
     #-----------------------------------------
-    ok(my $t_A_B1 = $activity->transitions->find({ transition_uid => 'ex4.A-B1'}));    
+    ok(my $t_A_B1 = $activity->transitions->find({ transition_uid => 'ex4.A-B1'}));
     ok(my $a_B1 = $t_A_B1->to_activity);
 
     ok(my $t_A_B = $activity->transitions->find({ transition_uid => 'ex4.A-B'}));
@@ -58,7 +58,7 @@ if(1) {
     my $ai_B1 = $t_A_B1->derive_and_accept_instance($ai_A, $attrs, @args);
     is($ai_B1->activity->activity_uid, 'ex4.B1','derive_and_accept results in B1');
 
-    # transition in joinA set to 'taken' since we're coming from a split    
+    # transition in joinA set to 'taken' since we're coming from a split
     is($ai_A->split->states->{$t_A_B1->id}, 'taken', "Transition A-B1 state is 'taken'");
 
     # after a split, the parent_token of the new ai is set to the split-ai
@@ -99,7 +99,7 @@ if(1) {
     my $ai_B = $t_A_B->derive_and_accept_instance($ai_A, $attrs, @args);
     is($ai_B->activity->activity_uid, 'ex4.B','derive_and_accept results in B');
 
-    # transition in joinA set to 'taken' since we're coming from a split    
+    # transition in joinA set to 'taken' since we're coming from a split
     $ai_A->split->discard_changes();
     is($ai_A->split->states->{$t_A_B->id}, 'taken', "Transition A-B state is 'taken'");
     is($ai_A->split->states->{$t_A_B1->id}, 'taken', "Transition A-B1 state is 'taken'");
@@ -134,7 +134,7 @@ if(1) {
    #is($ai_B->split->states->{$t_B_B1->id}, 'joined');
     ok($ai_B->is_completed);
    #ok($ai_B1->is_completed);
-    ok($ai_B1b->is_active);    
+    ok($ai_B1b->is_active);
 
 # C-JOIN
 
@@ -152,7 +152,7 @@ if(1) {
     $attrs = { activity => $a_C  };
 
     my $ai_C = $t_B_C->derive_and_accept_instance($ai_B, $attrs, @args);
-    is($ai_C->activity->activity_uid, 'ex4.C','derive_and_accept results in C');    
+    is($ai_C->activity->activity_uid, 'ex4.C','derive_and_accept results in C');
 
     ok(!$ai_C->is_enabled(), 'Join C should not fire yet');
     $ai_C->update({ deferred => DateTime->now() });
@@ -180,14 +180,14 @@ if(1) {
 
     # join D should not fire, path C-D hasn't come in yet
     #ok(!$a_D->should_join_fire($t_B2_D, $ai_B2), 'Join should not fire from B2');
-    
+
     $ai_B2->update({ completed => DateTime->now() });
     my $ai_D = $t_B2_D->derive_and_accept_instance($ai_B2, $attrs, @args);
     is($ai_D->activity->activity_uid, 'ex4.D','derive_and_accept results in D');
 
     ok(!$ai_D->is_enabled(), 'Join D should not fire yet');
     $ai_D->update({ deferred => DateTime->now() });
-    
+
     #- follow transition C-D (join->join)
     #-----------------------------------------
     $attrs = { activity => $a_D,  };
@@ -225,8 +225,8 @@ if(000) {
     my $aD = $p->activities->find({ activity_uid => 'D' });
 
     #my $activity = $p->start_activities->[0];
-    my $ai_A = $aA->new_instance({ 
-                process_instance_id => $i->id 
+    my $ai_A = $aA->new_instance({
+                process_instance_id => $i->id
                 });
 
     my $ai_B = $tAB->derive_and_accept_instance($ai_A, { activity => $aB }, @args);
@@ -242,7 +242,7 @@ if(000) {
 
     my $ai_D2 = $tCD->derive_and_accept_instance($ai_C, { activity => $aD }, @args);
     is($ai_D2->activity->activity_uid, 'D','derive_and_accept results in D');
-}                
+}
 
 if(1) {
     my ($r,$p,$i) = runner($engine, 'multi-inclusive-split-and-join', { splitA => 'B1', splitB => undef });
@@ -261,8 +261,8 @@ if(1) {
     my $aC  = $p->activities->find({ activity_uid => 'ex1.C' });
     my $aD  = $p->activities->find({ activity_uid => 'ex1.D' });
 
-    my $ai_A = $aA->new_instance({ 
-                process_instance_id => $i->id 
+    my $ai_A = $aA->new_instance({
+                process_instance_id => $i->id
                 });
     #ok(!$ai_A->split->should_fire($tAB, 1)); # dies with transition not taken
 
@@ -324,7 +324,7 @@ if(1) {
 
 #    ok($ai_C->is_reachable_from($aA));
 #    ok($ai_C->is_reachable_from($aB));
-#    ok(!$ai_C->is_reachable_from($aB1));    
+#    ok(!$ai_C->is_reachable_from($aB1));
 #    ok(!$ai_C->is_reachable_from($aD));
 
     ok(!$ai_B->split->should_fire($tBB1, 1));
@@ -339,7 +339,7 @@ if(1) {
     $ai_A->split->discard_changes;
 # ok($ai_A->split->should_fire($tAB1, 1));
 # ok($ai_A->split->should_fire($tAB, 1));
-   
+
 
     # B1-D
     $ai_B1b->update({ completed => DateTime->now() });
@@ -373,8 +373,8 @@ if(1) {
 
     #-- follow all transitions
   if(1) {
-    my $ai_A = $aA->new_instance({ 
-                process_instance_id => $i->id 
+    my $ai_A = $aA->new_instance({
+                process_instance_id => $i->id
                 });
 
     # A-B
@@ -397,7 +397,7 @@ if(1) {
 
     ok(!$ai_B1a->is_enabled(), 'Join B1 should not fire');
     $ai_B1a->update({ deferred => DateTime->now });
-    
+
     # trans A-B1 set to 'taken'
     $ai_A->split->discard_changes;
     #is($ai_A->split->states->{$tAB1->id}, 'joined');
@@ -436,7 +436,7 @@ if(1) {
     $ai_B1b->update({ completed => DateTime->now() });
     my $ai_B2 = $tB1B2->derive_and_accept_instance($ai_B1b, { activity => $aB2 }, @args);
     is($ai_B2->activity->activity_uid, 'ex4.B2','derive_and_accept results in B2');
-    
+
     # B2-D
     $ai_B2->update({ completed => DateTime->now() });
     ok($ai_B2->is_completed);
@@ -464,8 +464,8 @@ if(1) {
 
     #-- follow some transitions
   else {
-    my $ai_A = $aA->new_instance({ 
-                process_instance_id => $i->id 
+    my $ai_A = $aA->new_instance({
+                process_instance_id => $i->id
                 });
 
     # A-B
@@ -491,7 +491,7 @@ if(1) {
 # WCP10: Arbitrary Cycles (nested-loops) - test tokensets
 if(1) {
     $engine->create_package('./t/var/06-iteration.xpdl');
-    
+
     my ($r,$p,$i) = runner($engine, 'wcp10b2', { inner_loop => '1', outer_loop => 1 });
     my @args = ();
 
@@ -538,7 +538,7 @@ if(1) {
     my $ai_A2 = $tDA->derive_and_accept_instance($ai_D, { activity => $aA }, @args);
     ok($ai_A2->is_enabled(), 'Join1 should fire');
 
-    # B and C have active instances 
+    # B and C have active instances
     my $rs = $engine->schema->resultset('ActivityInstance');
     is($rs->active({ process_instance_id => $i->id })->count, 2);
     is($i->activity_instances->active->count, 2);

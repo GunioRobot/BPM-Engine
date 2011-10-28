@@ -42,20 +42,20 @@ __PACKAGE__->add_columns(
     prev => {
         data_type         => 'INT',
         is_nullable       => 1,
-        size              => 11,        
+        size              => 11,
         },
     created => {
         data_type         => 'DATETIME',
         is_nullable       => 1,
         set_on_create     => 1,
         timezone          => 'UTC',
-        },    
+        },
     );
 
 __PACKAGE__->set_primary_key('event_id');
 
 __PACKAGE__->belongs_to(
-    process_instance => 'BPM::Engine::Store::Result::ProcessInstance', 
+    process_instance => 'BPM::Engine::Store::Result::ProcessInstance',
     'process_instance_id'
     );
 

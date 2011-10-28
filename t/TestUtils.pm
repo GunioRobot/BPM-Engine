@@ -12,7 +12,7 @@ use parent qw/Exporter/;
 our @EXPORT = qw/ $dsn schema process_wrap runner /;
 
 my ($_schema, $_attr);
-our ($dsn, $user, $password, $DEBUG) = 
+our ($dsn, $user, $password, $DEBUG) =
     @ENV{map { "BPMTEST_${_}" } qw/DSN USER PASS KEEP/};
 
 if($dsn && $user && !$DEBUG) {
@@ -23,7 +23,7 @@ else {
         'dbi:SQLite:dbname=t/var/bpmengine.db' : 'dbi:SQLite::memory:';
     $user = '';
     $password = '';
-    $_attr = { sqlite_unicode => 1 };    
+    $_attr = { sqlite_unicode => 1 };
     }
 
 sub _local_db {
@@ -41,14 +41,14 @@ sub _local_db {
 sub schema {
     unless($_schema) {
         _local_db() if $DEBUG;
-        eval "require BPM::Engine::Store" 
+        eval "require BPM::Engine::Store"
             or die "failed to require schema: $@";
-        $_schema = BPM::Engine::Store->connect($dsn, $user, $password, $_attr) 
+        $_schema = BPM::Engine::Store->connect($dsn, $user, $password, $_attr)
             or die "failed to connect to $dsn";
-        $_schema->deploy({ add_drop_table => $_attr->{sqlite_unicode} ? 0 : 1 }) 
+        $_schema->deploy({ add_drop_table => $_attr->{sqlite_unicode} ? 0 : 1 })
             unless $DEBUG;
         }
-    
+
     return $_schema;
     }
 
@@ -102,20 +102,20 @@ t::TestUtils - Test utitily functions for BPM::Engine
 =head1 SYNOPSIS
 
     use t::TestUtils;
-    
-    is($dsn, 'dbi:SQLite::memory:');    
-    
+
+    is($dsn, 'dbi:SQLite::memory:');
+
     isa_ok(schema(), 'BPM::Engine::Store');
     schema()->resultset('Blah')->create({ blah => '123' });
-    
+
     my ($engine, $process) = process_wrap($process_xml, $package_xml);
-    
+
     my ($runner, $process, $instance) = runner($engine, $process_uid, \%args);
     my ($runner, $process, $instance) = runner( process_wrap($xml) );
 
 =head1 DESCRIPTION
 
-Test utility functions for L<BPM::Engine|BPM::Engine> tests. See the F<*.t> 
+Test utility functions for L<BPM::Engine|BPM::Engine> tests. See the F<*.t>
 files for usage examples.
 
 =head1 EXPORTED VARIABLE AND FUNCTIONS
@@ -126,14 +126,14 @@ The dsn of the test database used.
 
 =head2 schema
 
-Creates a temporary SQLite database, deploys the 
-L<BPM::Engine::Store|BPM::Engine::Store> schema, and then connects to it. 
-Subsequent calls to C<schema()> will return the schema created on the first 
-call. Since you have a fresh database for every test, you don't have to worry 
+Creates a temporary SQLite database, deploys the
+L<BPM::Engine::Store|BPM::Engine::Store> schema, and then connects to it.
+Subsequent calls to C<schema()> will return the schema created on the first
+call. Since you have a fresh database for every test, you don't have to worry
 about cleaning up after your tests, ordering of tests affecting failure, etc.
 
 Returns the L<BPM::Engine::Store|BPM::Engine::Store> instance connected and
-deployed to the test database. When your program exits, the temporary in-memory 
+deployed to the test database. When your program exits, the temporary in-memory
 database will go away, unless BPMTEST_KEEP is set.
 
 =head2 process_wrap
@@ -147,23 +147,23 @@ engine and the process result row.
 
 =item $process_xml
 
-Optional xml string representing any XPDL child elements in the 
+Optional xml string representing any XPDL child elements in the
 C<WorkflowProcess> after the C<ProcessHeader> element
 
 =item $package_xml
 
-Optional xml string representing any XPDL child elements coming after the 
+Optional xml string representing any XPDL child elements coming after the
 C<PackageHeader> element in the C<Package> definition
 
 =back
 
 =head2 runner
 
-Takes a L<BPM::Engine|BPM::Engine> object, a process_uid or a 
-L<BPM::Engine::Store::Result::Process|BPM::Engine::Store::Result::Process> 
+Takes a L<BPM::Engine|BPM::Engine> object, a process_uid or a
+L<BPM::Engine::Store::Result::Process|BPM::Engine::Store::Result::Process>
 object and an optional hashref of processs instance arguments, and creates a
-ProcessInstance result row. Returns a 
-L<BPM::Engine::ProcessRunner|BPM::Engine::ProcessRunner> instance for the 
+ProcessInstance result row. Returns a
+L<BPM::Engine::ProcessRunner|BPM::Engine::ProcessRunner> instance for the
 process instance, the Process result row and the ProcessInstance result row.
 
 =head1 ENVIRONMENT
@@ -176,20 +176,20 @@ environment variables.
 
 =head2 BPMTEST_KEEP
 
-If this variable is true, then the test database will not be deleted at C<END> 
+If this variable is true, then the test database will not be deleted at C<END>
 time.  Instead, the database will be available as F<./t/var/bpmengine.db>.
 
-This is useful if you want to look at the database your test generated, for 
+This is useful if you want to look at the database your test generated, for
 debugging. Note that the database will never exist on disk if you don't set this
 to a true value.
 
 =head2 BPMTEST_DSN
 
-If this variable is specified, this dsn will be connected to instead of the 
-in-memory or temporary SQLite database. This will only be used if BPMTEST_KEEP 
+If this variable is specified, this dsn will be connected to instead of the
+in-memory or temporary SQLite database. This will only be used if BPMTEST_KEEP
 is false, and at least the BPMTEST_USER is specified as well.
 
-WARNING: This will drop all tables used on test deployment, and all data will be 
+WARNING: This will drop all tables used on test deployment, and all data will be
 lost. You do NOT ever want to set this to the production database's dsn.
 
 =head2 BPMTEST_USER

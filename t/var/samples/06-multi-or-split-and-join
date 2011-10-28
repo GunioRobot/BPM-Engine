@@ -31,7 +31,7 @@
                     </DataType>
                     <InitialValue>'Mona Lisa'</InitialValue>
                 </DataField>
-            </DataFields>            
+            </DataFields>
             <Activities>
                 <Activity Id="A" Name="A">
                     <Implementation><Task><TaskManual/></Task></Implementation>
@@ -85,7 +85,7 @@
                 </Transition>
                 <Transition Id="A-B" From="A" To="B">
                     <Condition Type="CONDITION">1</Condition>
-                </Transition>            
+                </Transition>
                 <Transition Id="B-B1" From="B" To="B1">
                     <Condition Type="CONDITION"><Expression>1</Expression></Condition><!-- splitB == 'B1' -->
                 </Transition>

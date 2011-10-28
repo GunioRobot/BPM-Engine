@@ -27,7 +27,7 @@ before apply => sub {
     my $state = $instance->activity;
 
     unless ($state->has_transition($self)) {
-        die($self->transition_uid . ' is not in ' . 
+        die($self->transition_uid . ' is not in ' .
             $instance->activity->activity_uid . '\'s current state');
         }
 
@@ -58,27 +58,27 @@ before apply => sub {
 around apply => sub {
     my $next = shift;
     my ($self, $instance, @args) = @_;
-    
+
     $self->validate($instance, @args);
-    
+
     return $self->$next($instance, @args);
     };
 
 sub validate {
     my ($self, $instance, @args) = @_;
-    
+
     foreach my $validator($self->all_validators) {
         my $ok = eval { $self->$validator($instance, @args) };
         my $error = $@;
         if($error) {
-            is_Exception($error) ? 
+            is_Exception($error) ?
                 $error->rethrow() : throw_expression(error => $error);
             }
         elsif(!$ok) {
             throw_condition error => 'Condition (boolean) false';
             }
         }
-    
+
     return 1;
     }
 

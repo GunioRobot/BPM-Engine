@@ -10,11 +10,11 @@ use Moose::Role;
 sub new_instance {
     my ($self, $attrs) = @_;
     $attrs ||= {};
-    
-    my $guard = $self->result_source->schema->txn_scope_guard;    
+
+    my $guard = $self->result_source->schema->txn_scope_guard;
 
     my $process_instance = $self->add_to_instances($attrs);
-    
+
     if(my $package = $self->package) {
         $process_instance->create_attributes('container', $package->data_fields)
             if $package->data_fields;
@@ -23,9 +23,9 @@ sub new_instance {
         if $self->data_fields;
     $process_instance->create_attributes('params', $self->formal_params)
         if $self->formal_params;
-    
+
     $guard->commit;
-    
+
     return $process_instance;
     }
 
@@ -46,16 +46,16 @@ sub start_activity {
 
 sub mark_back_edges {
     my $self = shift;
-    
+
     my $g = $self->graph;
     return unless $g->is_cyclic;
-    
+
     $g = $g->copy_graph;
     #warn "Graph: ", $g->stringify(), "\n";
     my @v = sort $g->vertices();
     my @sources = $g->source_vertices();
     my $start = $sources[0]; # $self->start_activity->id;
-    
+
     # find and remove all cycles
     while( my @cyc = $g->find_a_cycle() ) {
         my $apsp = $g->APSP_Floyd_Warshall();
@@ -65,17 +65,17 @@ sub mark_back_edges {
         CYC: for my $v(@cyc) {
             next if $v eq $far;
             next unless $g->has_edge($far,$v);
-            
+
             $self->transitions({ from_activity_id => $far, to_activity_id => $v })
                 ->first->update({ is_back_edge => 1 });
-            
+
             # Remove edge (${far}->$v)
             $g->delete_edge($far,$v);
             $g->add_edge($v,$far);
             #warn "Graph is now: " . $g->stringify();
             last CYC;
             }
-        
+
         }
     }
 

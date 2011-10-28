@@ -38,7 +38,7 @@ __PACKAGE__->add_columns(
         default_value     => 'INOUT',
         extra             => { list => [qw/IN OUT INOUT/] },
         },
-    type => {        
+    type => {
         data_type         => 'ENUM',
         is_nullable       => 0,
         default           => 'BasicType',
@@ -102,7 +102,7 @@ sub new {
 
 sub validate {
     my ($self, $value) = @_;
-    
+
     throw_abstract error => 'BlockActivity not implemented yet';
     }
 
@@ -112,13 +112,13 @@ sub value {
     if($newvalue) {
         my $name = $self->name;
         die("Attribute '$name' is read-only") if($self->is_readonly);
-        die("Attribute value $newvalue should be a reference") 
+        die("Attribute value $newvalue should be a reference")
             unless(ref($newvalue));
         return $self->_value($newvalue);
         }
 
     my $value = $self->_value;
-    return ($self->type eq 'BasicType' && !$self->is_array) ? 
+    return ($self->type eq 'BasicType' && !$self->is_array) ?
         $value->[0] : $value;
     }
 

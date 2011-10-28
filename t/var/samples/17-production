@@ -42,7 +42,7 @@
                 </Activity>
                 <Activity Id="Configure" Name="Configure">
                     <Implementation><Task><TaskManual/></Task></Implementation>
-                </Activity>                
+                </Activity>
                 <Activity Id="Test1" Name="Test1">
                     <Implementation><Task><TaskManual/></Task></Implementation>
                 </Activity>

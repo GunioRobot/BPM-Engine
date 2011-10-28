@@ -28,7 +28,7 @@ __PACKAGE__->meta->make_immutable;
 
 ## no critic (ProhibitMultiplePackages)
 {
-package 
+package
   BPM::Engine::Class::Workflow::State;
 
 use namespace::autoclean;

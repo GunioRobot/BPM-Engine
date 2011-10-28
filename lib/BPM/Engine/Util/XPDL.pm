@@ -58,7 +58,7 @@ sub xml_doc {
 
 sub xml_hash {
     my $arg = shift or throw_param error => "Empty file, string or IO handle (xml_hash)";
-    
+
     my $xmldata = XML::LibXML::Simple::XMLin($arg, ForceArray => [qw/
         ExtendedAttribute FormalParameter DataField ActualParameter
         Participant Application Responsible
@@ -67,7 +67,7 @@ sub xml_hash {
       NormaliseSpace => 2,
       ValueAttr => [ 'GraphConformance' ],
       );
-    
+
     return $xmldata;
     }
 
@@ -83,7 +83,7 @@ sub xpdl_doc {
         my $v = $nodes[0]->textContent;
         $v =~ s/(^\s*|\s*$)//g;
         die "XPDL version not set" unless $v;
-        die "Unsupported XPDL version $v" 
+        die "Unsupported XPDL version $v"
             unless(grep { $v == $_ } qw/1.0 2.0 2.1 2.2/);
         $v =~ s/\./_/;
 
@@ -98,7 +98,7 @@ sub xpdl_doc {
         my $schema = XML::LibXML::Schema->new(location => $schema_file);
 
         eval { $schema->validate($doc); };
-        
+
         if(my $err = $@) {
             if(ref($err) eq 'XML::LibXML::Error') {
                 die "Non-conformant XML: " . $err->message .
@@ -112,7 +112,7 @@ sub xpdl_doc {
                 }
             }
         };
-    
+
     if(my $err = $@) {
         $err->rethrow() if(is_Exception($err));
         throw_model error => $err;
@@ -168,7 +168,7 @@ sub _remove_attributes {
 
     my @nodes = $xmldoc->getElementsByTagName($tag);
     foreach my $node(@nodes) {
-        foreach(@attr) { 
+        foreach(@attr) {
             $node->removeAttribute($_);
             }
         }
@@ -197,7 +197,7 @@ sub _xpdl_spec {
     my $file;
 
     eval {
-        # suppress warnings from File::ShareDir feeding uninitialized dir to 
+        # suppress warnings from File::ShareDir feeding uninitialized dir to
         # File::Spec's catfile() when dist not installed.
         # no warnings 'uninitialized' doesn't work here.
         local $SIG{__WARN__} = sub {};
@@ -213,14 +213,14 @@ sub _xpdl_spec {
             throw_install error => "Schema '$fname' not found in shared dirs";
             }
         unless ( -r $file) {
-            throw_install 
+            throw_install
                 error => "Schema '$fname' cannot be read, no read permissions";
             }
         }
     elsif($@) {
         throw_install error => "Schema '$fname' not found in shared dirs: $@";
         }
-    
+
     return $file;
     }
 
@@ -240,7 +240,7 @@ BPM::Engine::Util::XPDL - XPDL parsing helper functions
 =head1 SYNOPSIS
 
     use BPM::Engine::Util::XPDL ':all';
-    
+
     $data = xpdl_hash($input);
 
     say $data->{WorkflowProcesses}->[0]->{Id};
@@ -251,7 +251,7 @@ This module provides helper functions for parsing of XPDL files and strings.
 
 =head2 Parameter INPUT
 
-The first parameter to any function should be the XML message to be translated 
+The first parameter to any function should be the XML message to be translated
 into a Perl structure.  Choose one of the following:
 
 =over 4
@@ -268,7 +268,7 @@ Note, the filename C<< - >> (dash) can be used to parse from STDIN.
 =item A scalar reference to an XML string
 
 A string containing XML will be parsed directly.
-    
+
   my $string = '<Some>Thing</Some>';
   $doc = xml_doc(\$string);
 
@@ -283,7 +283,7 @@ An IO::Handle object will be read to EOF and its contents parsed. eg:
 
 =head1 EXPORTS
 
-None of the functions are exported by default. The C<:all> key exports all 
+None of the functions are exported by default. The C<:all> key exports all
 functions.
 
 =head2 xpdl_hash
@@ -321,7 +321,7 @@ A 'lightweight' parsing of XPDL-like XML strings. Useful for testing. Example:
     </Package>!;
 
     my $data = xml_hash($string);
-    
+
     say $data->{WorkflowProcesses}->[0]->{Id}; # prints 'OrderPizza'
 
 This function will possibly be deprecated in the near future.
@@ -335,8 +335,8 @@ Parses the given file (or URL), string, or input stream into a DOM tree.
 Returns a L<XML::LibXML::Document|XML::LibXML::Document> object.
 
 =head2 xpdl_doc
- 
-Parses the given file (or URL), string, or input stream (by calling 
+
+Parses the given file (or URL), string, or input stream (by calling
 C<xml_doc()>) and does some checks on the document, specifically:
 
 =over 4

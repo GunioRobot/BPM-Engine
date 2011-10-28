@@ -27,7 +27,7 @@ ok(my $engine = BPM::Engine->new(
     #warn "$event $entity $act";
 
     return 1 unless($entity eq 'activity' && $event eq 'execute');
-    
+
     #isa_ok($node,     'BPM::Engine::Store::Result::ActivityTask');
     #isa_ok($instance, 'BPM::Engine::Store::Result::ActivityInstance');
 

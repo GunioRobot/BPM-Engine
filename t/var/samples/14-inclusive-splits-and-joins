@@ -33,7 +33,7 @@
                     </DataType>
                     <InitialValue>'D'</InitialValue>
                 </DataField>
-            </DataFields>            
+            </DataFields>
             <Activities>
                 <Activity Id="A" Name="A">
                     <Implementation><Task><TaskManual/></Task></Implementation>

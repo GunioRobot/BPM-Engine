@@ -46,7 +46,7 @@ sub TO_JSON {
         $instance->{uri} = '/wfcs/activities/' . $row->id;
         push(@instances, $instance);
         }
-    
+
     return {
         total     => $rs->pager->total_entries, # scalar @instances, totalResultsAvailable
         row_count => $rs->pager->entries_on_this_page, # totalResultsReturned

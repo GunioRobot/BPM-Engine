@@ -14,11 +14,11 @@ use BPM::Engine::Exceptions qw/throw_store throw_param/;
 
 sub attribute {
     my ($self, $name, $value) = @_;
-    
+
     throw_param("Need a name") unless $name;
-    my $attr = $self->attributes->find({ name => $name }) 
+    my $attr = $self->attributes->find({ name => $name })
         or throw_store error => "Attribute named '$name' not found";
-    
+
     if(defined $value) {
         die("Attribute '$name' is read-only") if($attr->is_readonly);
         #$value = $attr->validate($value);
@@ -28,15 +28,15 @@ sub attribute {
         throw_param("Attribute value not a reference") unless(ref($value));
         $attr->update({ value => $value });
         }
-    
+
     return $attr;
     }
 
 sub attribute_hash {
     my $self = shift;
-    return { 
-        map { 
-            $_->name => $_->value 
+    return {
+        map {
+            $_->name => $_->value
             } $self->attributes->all
         };
     }
@@ -44,15 +44,15 @@ sub attribute_hash {
 sub create_attributes {
     my ($self, $scope, $data_fields) = @_;
 
-    throw_param error => "Need scope and data fields" 
+    throw_param error => "Need scope and data fields"
         unless($scope && $data_fields && ref($data_fields) eq 'ARRAY');
-    
+
     my $expr = BPM::Engine::Util::ExpressionEvaluator->load(
         process           => $self->process,
         process_instance  => ref($self) =~ /Activity/ ?
             $self->process_instance : $self,
         );
-    
+
     my $build_value = sub {
         my $init = shift || {};
         ## no critic (ProhibitExplicitReturnUndef)
@@ -67,7 +67,7 @@ sub create_attributes {
         else {
             $ivalue = $expr->render($ivalue);
             }
-        
+
         return $ivalue;
         };
 
@@ -93,9 +93,9 @@ sub create_attributes {
             value          => $value,
             });
         }
-    
+
     $guard->commit;
-    
+
     return;
     }
 

@@ -27,31 +27,31 @@ sub apply {
             },
         @args,
         );
-    
+
     return wantarray ? ($new_instance, @rv) : $new_instance;
     }
 
 sub _apply_body {
     my ($self, $instance, @args) = @_;
-    
+
     return {}, (); # no fields, no additional values
     }
 
 sub derive_and_accept_instance {
     my ($self, $proto_instance, $attrs, @args) = @_;
 
-    my $activity = delete $attrs->{activity} 
+    my $activity = delete $attrs->{activity}
         or die "You must specify the next activity of the instance";
 
-    my $from_activity = $self->from_activity;    
+    my $from_activity = $self->from_activity;
     if($from_activity->split_type ne 'NONE') {
         # set transition 'taken' if coming from a split
         my $split = $proto_instance->split
             or die("No join found for split " . $from_activity->activity_uid);
         $split->set_transition($self->id, 'taken');
         }
-        
-    # Tokens placed on downstream edges keep the Tokenset of the firing Token. 
+
+    # Tokens placed on downstream edges keep the Tokenset of the firing Token.
     # Tokens placed on upstream edges on the other hand will each be created in
     # the context of a new Tokenset.
     if($self->is_back_edge) { # upstream (start new cycle loop)
@@ -60,7 +60,7 @@ sub derive_and_accept_instance {
     else {
         $attrs->{tokenset} = $proto_instance->parent_token_id;
         }
-    
+
     return $activity->new_instance({
         process_instance_id => $proto_instance->process_instance_id,
         prev                => $proto_instance->id,

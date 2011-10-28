@@ -13,11 +13,11 @@ __PACKAGE__->table('wfe_activity_instance_attr');
 __PACKAGE__->add_columns(
     activity_instance_id => {
         data_type         => 'INT',
-        is_nullable       => 0,        
+        is_nullable       => 0,
         size              => 11,
         is_foreign_key    => 1,
         extras            => { unsigned => 1 },
-        },    
+        },
     name => {
         data_type         => 'VARCHAR',
         size              => 64,
@@ -42,7 +42,7 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key(qw/ activity_instance_id name /);
 
 __PACKAGE__->belongs_to(
-    activity_instance => 'BPM::Engine::Store::Result::ActivityInstance', 
+    activity_instance => 'BPM::Engine::Store::Result::ActivityInstance',
     'activity_instance_id'
     );
 

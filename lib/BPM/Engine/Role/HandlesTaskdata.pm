@@ -35,11 +35,11 @@ before 'execute_task' => sub {
             process_instance_id => $pi->id,
             activity_id         => $activity->id,
             token_id            => $activity_instance->id,
-            task_id             => $task->id,            
+            task_id             => $task->id,
             },
         parameters => $task->actual_params, # XXX expression ApplicationFormalParams
         message    => _message($self, $tdata->{$mtype}, $process, $pi),
-        service    => _service($tdata->{'WebServiceOperation'}),        
+        service    => _service($tdata->{'WebServiceOperation'}),
         performers => _performers($activity->participants_rs),
         users      => _performers($task->participants_rs),
 #            $process->participants_rs(
@@ -49,14 +49,14 @@ before 'execute_task' => sub {
         };
 
     $activity_instance->update({ taskdata => $args });
-    
+
     return;
     };
 
 sub _performers {
     my $p_rs = shift;
     return [ map { _performer($_) } $p_rs->all ];
-    
+
     #my @p = ();
     #while (my $rec = $p_rs->next) {
     #    push(@p, _performer($rec));
@@ -113,28 +113,28 @@ sub _message_params {
 
     my @results = ();
     foreach my $attr (@$params) {
-        
+
         my $output;
         if ($attr->{ScriptType} && $attr->{ScriptType} =~ /xslate/i) {
             try {
                 $output = $self->evaluator->render($attr->{content});
                 }
             catch {
-                $output = "SCRIPT ERROR $_ "; 
-                #warn Dumper $attr->{content};                
+                $output = "SCRIPT ERROR $_ ";
+                #warn Dumper $attr->{content};
                 #$output = $attr->{content};
                 };
             }
         elsif ($attr->{content} =~ /\./) {
             #die("Dotted content needs ScriptType");
-            try {            
+            try {
                 $output = $self->evaluator->dotop($attr->{content});
                 }
             catch {
-                $output = "SCRIPT.DOTTED ERROR $_";                
+                $output = "SCRIPT.DOTTED ERROR $_";
                 };
             }
-        else {            
+        else {
             $output = $pi->attribute($attr->{content})->value;
             }
 

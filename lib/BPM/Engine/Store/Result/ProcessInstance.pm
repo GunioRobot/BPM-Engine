@@ -28,7 +28,7 @@ __PACKAGE__->add_columns(
         size              => 36,
         is_nullable       => 0,
         is_foreign_key    => 1,
-        },    
+        },
     parent_ai_id => {     # parent blockactivity
         data_type         => 'INT',
         is_nullable       => 1,
@@ -108,7 +108,7 @@ sub insert {
 sub TO_JSON {
     my $self = shift;
     my $fields = {
-        map { $_ => $self->$_() } 
+        map { $_ => $self->$_() }
             qw/instance_id process_id instance_name created completed/
         };
     # $fields->{attributes} = [ map { $_->TO_JSON } $self->attributes_rs->all ];

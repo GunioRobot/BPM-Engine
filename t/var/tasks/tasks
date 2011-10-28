@@ -56,7 +56,7 @@
                               <Message Id="5"/>
                               <TransitionRef Id="6"/>
                           </WebServiceFaultCatch>
-                      </TaskSend>          
+                      </TaskSend>
                     </Task>
                   </Implementation>
                 </Activity>
@@ -96,8 +96,8 @@
 <!-- Service -->
                 <Activity Id="service1" Name="Service 1">
                     <Description />
-                    <Implementation> 
-                        <Task> 
+                    <Implementation>
+                        <Task>
                             <TaskService Implementation="WebService">
                                 <MessageIn Id="7" Name="msg" From="Bob" To="Alice" FaultName="error">
                                     <ActualParameters>
@@ -106,11 +106,11 @@
                                     </ActualParameters>
                                 </MessageIn>
                                 <MessageOut Id="8">
-                                    <DataMappings> 
-                                        <DataMapping Formal="subprocParam1" Direction="OUT"> 
-                                            <Actual>ParProcFieldName</Actual> 
-                                            <TestValue>'This subprocess has not been invoked'</TestValue> 
-                                        </DataMapping> 
+                                    <DataMappings>
+                                        <DataMapping Formal="subprocParam1" Direction="OUT">
+                                            <Actual>ParProcFieldName</Actual>
+                                            <TestValue>'This subprocess has not been invoked'</TestValue>
+                                        </DataMapping>
                                     </DataMappings>
                                 </MessageOut>
                                 <WebServiceOperation OperationName="service_task">
@@ -126,18 +126,18 @@
                                 </WebServiceOperation>
                                 <WebServiceFaultCatch FaultName="throws">
                                     <Message Id="5">
-                                        <DataMappings> 
-                                            <DataMapping Formal="subprocParam1" Direction="OUT"> 
-                                              <Actual>ParProcFieldName</Actual> 
-                                              <TestValue>'This subprocess has not been invoked'</TestValue> 
-                                          </DataMapping> 
+                                        <DataMappings>
+                                            <DataMapping Formal="subprocParam1" Direction="OUT">
+                                              <Actual>ParProcFieldName</Actual>
+                                              <TestValue>'This subprocess has not been invoked'</TestValue>
+                                          </DataMapping>
                                         </DataMappings>
                                     </Message>
                                     <TransitionRef Id="6"/>
                                 </WebServiceFaultCatch>
                             </TaskService>
-                        </Task> 
-                    </Implementation> 
+                        </Task>
+                    </Implementation>
                 </Activity>
 
 
@@ -177,7 +177,7 @@
                         </TaskUser>
                     </Task>
                   </Implementation>
-                </Activity>  
+                </Activity>
 <!-- Manual -->
                 <Activity Id="manual" Name="manual">
                     <Implementation>
@@ -192,8 +192,8 @@
                 </Activity>
 <!-- Script -->
                 <Activity Id="script" Name="Script">
-                    <Implementation> 
-                        <Task> 
+                    <Implementation>
+                        <Task>
                             <TaskScript>
                                 <Script ScriptType="tt"><![CDATA[
                                     IF amount > 100;
@@ -203,8 +203,8 @@
                                     END
                                 ]]></Script>
                             </TaskScript>
-                        </Task> 
-                    </Implementation> 
+                        </Task>
+                    </Implementation>
                 </Activity>
 
             </Activities>

@@ -15,16 +15,16 @@ with qw/
 
 sub new_instance {
     my ($self, $args) = @_;
-    
+
     my $guard = $self->result_source->schema->txn_scope_guard;
-    
+
     my $ai = $self->add_to_instances($args);
     if($self->is_split) {
         $ai->create_related('split', { states => {} });
         }
-    
+
     $guard->commit;
-    
+
     #$ai->discard_changes;
     return $ai;
     }

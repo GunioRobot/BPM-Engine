@@ -105,22 +105,22 @@ Throw an exception when something is wrong
         throw_plugin("Whoops!") unless $length =~ /\d+/;
 
         # ...
-        }    
+        }
 
-Now let's try something illegal and catch the exception    
-    
+Now let's try something illegal and catch the exception
+
     # use the is_Exception() function exported from the types library
-    use BPM::Engine::Types qw/Exception/;    
-    
+    use BPM::Engine::Types qw/Exception/;
+
     eval {
         $obj->set_length( 'non-numerical value' ); # this throws the error
         #...
     };
-    
+
     # handle any exception, cathing them in various ways
     if(my $err = $@) {
         # encountered an error
-        
+
         if( Exception::Class->caught('BPM::Engine::Exception::Engine') ) {
             #... use the thrown error obj
             warn $err->error;
@@ -154,14 +154,14 @@ modules and provides shortcuts to make raising an exception easier and more
 readable.
 
 The exceptions are subclasses of Exception::Class::Base, created by the
-interface defined by C<Exception::Class>. See 
+interface defined by C<Exception::Class>. See
 L<Exception::Class|Exception::Class> for more information on how this is done.
 
 =head1 EXCEPTIONS
 
-Each of the exception classes created by BPM::Engine::Exceptions has a 
-functional alias for its throw class method. In the L<SYNOPSIS|/SYNOPSIS> 
-example, we use the C<throw_plugin> function to throw a 
+Each of the exception classes created by BPM::Engine::Exceptions has a
+functional alias for its throw class method. In the L<SYNOPSIS|/SYNOPSIS>
+example, we use the C<throw_plugin> function to throw a
 C<BPM::Engine::Exception::Plugin> exception.
 
 These may be imported by passing a list of the function names to import:

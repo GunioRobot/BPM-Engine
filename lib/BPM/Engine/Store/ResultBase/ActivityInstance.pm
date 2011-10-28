@@ -46,7 +46,7 @@ workflow:
         - name    : reassign
           to_state: open.running.assigned
         - name    : unassign
-          to_state: open.running.not_assigned        
+          to_state: open.running.not_assigned
         - name    : suspend
           to_state: open.not_running.suspended
         - name    : abort

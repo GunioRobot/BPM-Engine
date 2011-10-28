@@ -73,8 +73,8 @@ BPM::Engine - Business Process Execution Engine
 
 =head1 SYNOPSIS
 
-Create a new bpm engine  
-  
+Create a new bpm engine
+
   use BPM::Engine;
 
   my $callback = sub {
@@ -88,15 +88,15 @@ Create a new bpm engine
       callback          => $callback
       );
 
-Save an XPDL file with workflow process definitions, and retrieve the process 
+Save an XPDL file with workflow process definitions, and retrieve the process
 definitions
-  
+
   my $package = $engine->create_package('/path/to/model.xpdl');
 
   my @processes = $engine->get_process_definitions->all;
 
-Create and run a process instance  
-  
+Create and run a process instance
+
   my $instance = $engine->create_process_instance(
       $process, { instance_name => 'My first process run' }
       );
@@ -136,7 +136,7 @@ Possible options are:
 
 =item C<< schema => $schema // BpmEngineStore >>
 
-L<BPM::Engine::Store> connected schema object. If not provided, one will be 
+L<BPM::Engine::Store> connected schema object. If not provided, one will be
 created using the C<connect_info> option.
 
 Either C<schema> or C<connect_info> is required on object construction.
@@ -165,7 +165,7 @@ C<logger>, if a logger was not provided.
 
 =item C<< callback => \&cb >>
 
-Optional callback I<&cb> which is called on all process instance events. This 
+Optional callback I<&cb> which is called on all process instance events. This
 option is passed to any C<BPM::Engine::ProcessRunner> constructor.
 
 =item C<< runner_traits => [qw/TraitA TraitB/] // [] >>
@@ -182,7 +182,7 @@ Optional traits to be supplied to all C<BPM::Engine::ProcessRunner> objects used
 
 Provided by the base role L<MooseX::SimpleConfig>.  Acts just like
 regular C<new()>, but also accepts an argument C<configfile> to specify
-the configfile from which to load other attributes. 
+the configfile from which to load other attributes.
 
 =over
 
@@ -195,12 +195,12 @@ about supported formats.
 
 =back
 
-Explicit arguments to C<new_with_config> will override anything loaded from the 
+Explicit arguments to C<new_with_config> will override anything loaded from the
 configfile.
 
 =head3 B<< BPM::Engine->new_with_traits(%options) >>
 
-Just like C<new()>, but also accepts a C<traits> argument with a list of trait 
+Just like C<new()>, but also accepts a C<traits> argument with a list of trait
 names to apply to the engine object.
 
     $engine = BPM::Engine->new_with_traits(
@@ -214,13 +214,13 @@ Options, in addition to those to C<new()>:
 
 =item C<< traits => \@traitnames // [] >>
 
-Traits live under the C<BPM::Engine::Trait> namespace by default, prefix full 
+Traits live under the C<BPM::Engine::Trait> namespace by default, prefix full
 class names with a C<+>.
 
 =back
 
 =head3 B<< BPM::Engine->with_traits(@traits)->new(%options) >>
-    
+
 You can use the C<with_traits> class method to use traits in combination
 with a configuration file. Example:
 
@@ -242,8 +242,8 @@ with a configuration file. Example:
 
 =back
 
-Get a L<DBIx::Class::ResultSet|DBIx::Class::ResultSet> of 
-L<BPM::Engine::Store::Result::Package> rows. Takes the same arguments as the 
+Get a L<DBIx::Class::ResultSet|DBIx::Class::ResultSet> of
+L<BPM::Engine::Store::Result::Package> rows. Takes the same arguments as the
 L<DBIx::Class::ResultSet> C<search()> method.
 
 =head3 get_package
@@ -258,9 +258,9 @@ L<DBIx::Class::ResultSet> C<search()> method.
 
 =back
 
-Takes a package UUID or a hashref and optional standard 
-L<DBIC resultset attributes|DBIx::Class::ResultSet/ATTRIBUTES> and returns the 
-L<BPM::Engine::Store::Result::Package> row. Delegates to 
+Takes a package UUID or a hashref and optional standard
+L<DBIC resultset attributes|DBIx::Class::ResultSet/ATTRIBUTES> and returns the
+L<BPM::Engine::Store::Result::Package> row. Delegates to
 L<DBIx::Class::ResultSet>'s C<find()> method.
 
 Throws an exception if the package is not found.
@@ -277,7 +277,7 @@ Throws an exception if the package is not found.
 
 =back
 
-Takes XPDL xml input and returns a newly created Package row. Input can be a 
+Takes XPDL xml input and returns a newly created Package row. Input can be a
 file path, URL, reference to a string or io stream.
 
 Throws an exception if inconsistencies were found in the xml.
@@ -294,7 +294,7 @@ Throws an exception if inconsistencies were found in the xml.
 
 =back
 
-Delete a package from the data store. Warning: this will also delete all 
+Delete a package from the data store. Warning: this will also delete all
 processes and process instances related to the package.
 
 An exception is thrown if the package is not in the database.
@@ -312,7 +312,7 @@ An exception is thrown if the package is not in the database.
 =back
 
 Get a L<DBIx::Class::ResultSet|DBIx::Class::ResultSet> of
-L<BPM::Engine::Store::Result::Process|BPM::Engine::Store::Result::Process> rows. 
+L<BPM::Engine::Store::Result::Process|BPM::Engine::Store::Result::Process> rows.
 Takes the same arguments as the L<DBIx::Class::ResultSet> C<search()> method.
 
 =head3 get_process_definition
@@ -329,7 +329,7 @@ Takes the same arguments as the L<DBIx::Class::ResultSet> C<search()> method.
 
 Takes a package UUID or a hashref and optional standard
 L<DBIC resultset attributes|DBIx::Class::ResultSet/ATTRIBUTES> and returns the
-corresponding L<BPM::Engine::Store::Result::Process> row. Delegates to 
+corresponding L<BPM::Engine::Store::Result::Process> row. Delegates to
 L<DBIx::Class::ResultSet>'s C<find()> method.
 
 Throws an exception if the process is not found.
@@ -349,8 +349,8 @@ Throws an exception if the process is not found.
 =back
 
 Get a L<DBIx::Class::ResultSet|DBIx::Class::ResultSet> of
-L<BPM::Engine::Store::Result::ProcessInstance|BPM::Engine::Store::Result::ProcessInstance> 
-rows. Takes the same arguments as the L<DBIx::Class::ResultSet> C<search()> 
+L<BPM::Engine::Store::Result::ProcessInstance|BPM::Engine::Store::Result::ProcessInstance>
+rows. Takes the same arguments as the L<DBIx::Class::ResultSet> C<search()>
 method.
 
 =head3 get_process_instance
@@ -382,11 +382,11 @@ L<DBIx::Class::ResultSet>'s C<find()> method.
 
 =back
 
-Creates a new process instance, given a process id or 
-L<BPM::Engine::Store::Result::Process> row object and an optional hash of 
+Creates a new process instance, given a process id or
+L<BPM::Engine::Store::Result::Process> row object and an optional hash of
 process instance properties.
 
-Of these process instance properties, C<instance_name> is useful to specify a 
+Of these process instance properties, C<instance_name> is useful to specify a
 name for the instance. A name will be auto-generated if not specified.
 
 Returns the L<BPM::Engine::Store::Result::ProcessInstance> that was created.
@@ -403,7 +403,7 @@ Returns the L<BPM::Engine::Store::Result::ProcessInstance> that was created.
 
 =back
 
-Starts to run a process instance given a process instance object or id, and an 
+Starts to run a process instance given a process instance object or id, and an
 optional hash of process instance attributes.
 
 =head3 delete_process_instance
@@ -452,7 +452,7 @@ $state_transition
 
 =back
 
-Sets the new state of the process instance given a process instance id or a 
+Sets the new state of the process instance given a process instance id or a
 process instance object and a state transition name.
 
 The following state transitions are possible:
@@ -461,23 +461,23 @@ The following state transitions are possible:
 
 =item start
 
-Changes the process instance state from C<open.not_running.ready> to 
+Changes the process instance state from C<open.not_running.ready> to
 C<open.running>.
 
 =item suspend
 
-Changes the process instance state from C<open.running> to 
+Changes the process instance state from C<open.running> to
 C<open.not_running.suspended>.
 
 =item resume
 
-Changes the process instance state from C<open.not_running.suspended> to 
+Changes the process instance state from C<open.not_running.suspended> to
 C<open.running>.
 
 =item terminate
 
-Changes the process instance state from C<open.not_running.ready>, 
-C<open.running> or C<open.not_running.suspended> to 
+Changes the process instance state from C<open.not_running.ready>,
+C<open.running> or C<open.not_running.suspended> to
 C<closed.cancelled.terminated>. This is an end state (no more state transitions
 possible).
 
@@ -485,17 +485,17 @@ possible).
 
 Changes the process instance state from C<open.not_running.ready>,
 C<open.running> or C<open.not_running.suspended> to
-C<closed.cancelled.aborted>. This is an end state (no more state transitions 
+C<closed.cancelled.aborted>. This is an end state (no more state transitions
 possible).
 
 =item finish
 
-Changes the process instance state from C<open.running> to C<closed.completed>. 
+Changes the process instance state from C<open.running> to C<closed.completed>.
 This is an end state (no more state transitions possible).
 
 =back
 
-An exception will be thrown for invalid state transitions, for example when the 
+An exception will be thrown for invalid state transitions, for example when the
 process instance is not in the right state to allow the transition.
 
 =head2 ACTIVITY INSTANCE METHODS
@@ -518,7 +518,7 @@ rows. Takes the same arguments as the L<DBIx::Class::ResultSet> C<search()>
 method.
 
 =head3 get_activity_instance
-    
+
     $ai = $engine->get_activity_instance($aid);
 
 =over 4
@@ -561,17 +561,17 @@ C<open.running.not_assigned>.
 
 =item assign
 
-Changes the activity instance state from C<open.not_running.ready> or 
+Changes the activity instance state from C<open.not_running.ready> or
 C<open.running.not_assigned> to C<open.running.assigned>.
 
 =item reassign
 
-Valid state transition when the activity instance state is 
+Valid state transition when the activity instance state is
 C<open.running.assigned>. Does not actually change the state.
 
 =item unassign
 
-Changes the activity instance state from C<open.running.assigned> to 
+Changes the activity instance state from C<open.running.assigned> to
 C<open.running.not_assigned>.
 
 =item suspend
@@ -587,13 +587,13 @@ C<open.running.assigned>.
 =item abort
 
 Changes the activity instance state from C<open.not_running.ready> or
-C<open.running.assigned> to C<closed.cancelled.aborted>. This is an end state 
+C<open.running.assigned> to C<closed.cancelled.aborted>. This is an end state
 (no more state transitions possible).
 
 =item finish
 
-Changes the activity instance state from C<open.not_running.ready> or 
-C<open.running.assigned> to C<closed.completed>. This is an end state (no more 
+Changes the activity instance state from C<open.not_running.ready> or
+C<open.running.assigned> to C<closed.completed>. This is an end state (no more
 state transitions possible).
 
 =back
@@ -612,7 +612,7 @@ $attribute_name, $attribute_value?
 
 =back
 
-Gets or sets an activity instance attribute, and returns the corresponding 
+Gets or sets an activity instance attribute, and returns the corresponding
 L<ActivityInstanceAttribute|BPM::Engine::Store::Result::ActivityInstanceAttribute>
 row.
 
@@ -717,7 +717,7 @@ L<http://github.com/sitetechie/BPM-Engine>
 
 Copyright (c) 2010, 2011 Peter de Vos.
 
-This module is free software; you can redistribute it and/or modify it under the 
+This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself. See L<perlartistic>.
 
 =head1 DISCLAIMER OF WARRANTY

@@ -15,7 +15,7 @@ __PACKAGE__->load_components(qw/InflateColumn::DateTime/);
 # override call from within DBIx::Class::InflateColumn::DateTime
 sub _inflate_to_datetime {
     my ($self, @args) = @_;
-    
+
     my $val = $self->next::method(@args);
     return bless $val, 'BPM::Engine::DateTime';
     }
@@ -40,7 +40,7 @@ use warnings;
 use parent 'DateTime';
 
 sub TO_JSON {
-    my $dt = shift; 
+    my $dt = shift;
     return "$dt";
     }
 }

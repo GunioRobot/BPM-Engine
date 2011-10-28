@@ -9,7 +9,7 @@ use MooseX::Declare;
 role BPM::Engine::Handler::ProcessInstanceHandler {
 
   use Scalar::Util qw/blessed/;
-  use BPM::Engine::Types qw/UUID/;  
+  use BPM::Engine::Types qw/UUID/;
   use BPM::Engine::Exceptions qw/throw_store throw_abstract/;
   use aliased 'BPM::Engine::Store::Result::Process';
   use aliased 'BPM::Engine::Store::Result::ProcessInstance';
@@ -46,7 +46,7 @@ role BPM::Engine::Handler::ProcessInstanceHandler {
 
       my $runner = $self->runner($pi);
       $runner->start_process();
-      
+
       return;
       }
 
@@ -56,7 +56,7 @@ role BPM::Engine::Handler::ProcessInstanceHandler {
       return $pi->delete;
       }
 
-  method process_instance_attribute 
+  method process_instance_attribute
       (Int|HashRef|ProcessInstance $pi, Str $attr, Str $value?) {
 
       $pi = $self->get_process_instance($pi) unless(blessed $pi);

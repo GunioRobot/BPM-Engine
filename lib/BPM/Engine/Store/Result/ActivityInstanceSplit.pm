@@ -35,7 +35,7 @@ __PACKAGE__->add_columns(
     fired_count => {
         data_type         => 'INT',
         default_value     => 0,
-        is_nullable       => 0,        
+        is_nullable       => 0,
         size              => 6,
         extras            => { unsigned => 1 },
         },
@@ -43,7 +43,7 @@ __PACKAGE__->add_columns(
         data_type         => 'TEXT',
         is_nullable       => 1,
         serializer_class  => 'JSON',
-        },    
+        },
     );
 
 __PACKAGE__->set_primary_key(qw/ split_id /);
@@ -54,18 +54,18 @@ __PACKAGE__->belongs_to(
 
 sub set_transition {
     my ($self, $transition_id, $state) = @_;
-    
+
     die("Invalid split state '$state'") unless $state =~ /^(taken|blocked|joined)$/;
     my $states = $self->states || {};
     if($states->{$transition_id} && $state ne 'joined') {
-        die("Transition state '$state' already set in Join as '" . 
+        die("Transition state '$state' already set in Join as '" .
             $states->{$transition_id} . "'"
             );
         }
     elsif(!$states->{$transition_id} && $state eq 'joined') {
         die("State '$state' not previously taken for transition '$transition_id'");
         }
-    
+
     $states->{$transition_id} = $state || 'taken';
     $self->states($states);
     $self->update->discard_changes();
@@ -80,13 +80,13 @@ sub should_fire {
             "' doesn't match transition " . $transition->transition_uid .
             " activity '" . $transition->from_activity->activity_uid . "'");
         }
-    
+
     $self->set_transition($transition->id, 'joined') unless $no_update;
   $self->discard_changes();
-    
+
     my $states = $self->states;
-    die("Transition " . $transition->transition_uid . " not taken") 
-        unless $states->{$transition->id};    
+    die("Transition " . $transition->transition_uid . " not taken")
+        unless $states->{$transition->id};
     my @followed = grep { $states->{$_} eq 'joined' } keys %{$states};
 
     return 0 if scalar @followed != scalar keys %{$self->states};

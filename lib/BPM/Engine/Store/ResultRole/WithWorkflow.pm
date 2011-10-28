@@ -50,16 +50,16 @@ sub _workflow_txn {
         # pass the current workflow instance to the closure, and if
         # the closure returns a valid instance, store it in the object
         my $new_instance = eval { $self->$sub($self->workflow_instance) };
-        
+
         if (defined $new_instance) {
             $self->workflow_instance($new_instance);
             $self->update;
             }
-        elsif ($@) { 
+        elsif ($@) {
             die $@;
             }
-        else { 
-            die "$sub did not return a new workflow instance"; 
+        else {
+            die "$sub did not return a new workflow instance";
             }
         });
     }
